@@ -20,6 +20,45 @@ Haowei Cao
 class Solution {
 public:
     string reverseWords(string s) {
+        if(s.empty() || s.length() == 1) return s;
+        int start = 0, end = 0;
+        for(int i=0; i<s.length(); ++i)
+        {
+            if(s[i + 1] == ' ' || s[i + 1] == '\0')
+            {
+                end = i;
+                while(end > start)
+                {
+                    // 循环交换start和end处的字符
+                    swap(s[start], s[end]);
+                    end --;
+                    start ++;
+                }
+                // start和end都定位到下一个单词的首位
+                start = i + 2;
+                end = start;
+            }
+        }
+        return s;
+    }
+    void swap(char &s, char &e)
+    {
+        // 注意s和e一定要用call by reference的方式传进来！否则改变不了
+        char temp = s;
+        s = e;
+        e = temp;
+    }
+};
+
+
+
+
+
+
+//官方答案：
+class Solution {
+public:
+    string reverseWords(string s) {
         string ret;
         int length = s.length();
         int i = 0;
@@ -40,3 +79,35 @@ public:
     }
 };
 
+class Solution {
+public:
+    string reverseWords(string s) {
+        int startPoint = 0;
+        string newString;
+        int i, j,sLength,cutSize;
+        string tempString;
+        for( i = 0; i <s.size(); i++){
+            if((s.at(i) == ' ' )||( i==s.size()-1)){
+                if(i==(s.size()-1)){
+                    sLength= i-startPoint;
+                    cutSize = i-startPoint+1;
+                }
+                else{
+                    sLength= i-startPoint -1;
+                    cutSize = i-startPoint;
+                }
+                tempString = s.substr(startPoint,cutSize);
+
+                for(j= sLength; j >=0; j--){
+                    newString.push_back(tempString.at(j));
+                }
+                startPoint=i+1;
+                tempString.clear();
+                if(i!=s.size()-1){
+                    newString.push_back(' ');
+                }
+            }
+        }
+        return newString;
+    }
+};
